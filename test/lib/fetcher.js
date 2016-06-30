@@ -24,7 +24,7 @@ describe('fetcher', () => {
 
   describe('addon', () => {
     it('returns addon attached to app', () => {
-      resolver.attachment = (_, app, db) => {
+      resolver.attachment = (app, db) => {
         if (app === 'myapp' && db === 'DATABASE_URL') {
           return Promise.resolve({addon: {name: 'postgres-1'}})
         }
