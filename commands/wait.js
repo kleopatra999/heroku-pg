@@ -11,7 +11,7 @@ function * run (context, heroku) {
 
   let waitFor = co.wrap(function * waitFor (db) {
     const wait = require('co-wait')
-    let interval = parseInt(context.args.interval)
+    let interval = parseInt(context.flags['wait-interval'])
     if (!interval || interval < 0) interval = 1
 
     let status
@@ -57,5 +57,6 @@ module.exports = {
   needsApp: true,
   needsAuth: true,
   args: [{name: 'database', optional: true}],
+  flags: [{name: 'wait-interval', description: 'how frequently to poll in seconds (to avoid rate limiting)', hasValue: true}],
   run: cli.command({preauth: true}, co.wrap(run))
 }

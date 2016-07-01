@@ -38,7 +38,7 @@ describe('pg:wait', () => {
       .get('/client/v11/databases/postgres-1/wait_status').reply(200, {'waiting?': true, message: 'pending'})
       .get('/client/v11/databases/postgres-1/wait_status').reply(200, {'waiting?': false, message: 'available'})
 
-    return cmd.run({app: 'myapp', args: {database: 'DATABASE_URL'}})
+    return cmd.run({app: 'myapp', args: {database: 'DATABASE_URL'}, flags: {}})
       .then(() => expect(cli.stdout, 'to equal', ''))
       .then(() => expect(cli.stderr, 'to equal', `Waiting for database postgres-1... pending
 Waiting for database postgres-1... available
@@ -50,7 +50,7 @@ Waiting for database postgres-1... available
       .get('/client/v11/databases/postgres-1/wait_status').reply(200, {'waiting?': false})
       .get('/client/v11/databases/postgres-2/wait_status').reply(200, {'waiting?': false})
 
-    return cmd.run({app: 'myapp', args: {}})
+    return cmd.run({app: 'myapp', args: {}, flags: {}})
       .then(() => expect(cli.stdout, 'to equal', ''))
       .then(() => expect(cli.stderr, 'to equal', ''))
   })
@@ -59,7 +59,7 @@ Waiting for database postgres-1... available
     pg
       .get('/client/v11/databases/postgres-1/wait_status').reply(200, {'error?': true, message: 'this is an error message'})
 
-    return cmd.run({app: 'myapp', args: {}})
+    return cmd.run({app: 'myapp', args: {}, flags: {}})
       .catch(err => {
         if (err.code !== 1) throw err
         expect(cli.stdout, 'to equal', '')
