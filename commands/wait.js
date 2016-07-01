@@ -3,7 +3,7 @@
 const cli = require('heroku-cli-util')
 const co = require('co')
 
-function * run (context) {
+function * run (context, heroku) {
   const fetcher = require('../lib/fetcher')
   const host = require('../lib/host')
   const app = context.app
@@ -18,7 +18,7 @@ function * run (context) {
     let waiting = false
 
     while (true) {
-      status = yield cli.heroku.request({
+      status = yield heroku.request({
         host: host(db),
         path: `/client/v11/databases/${db.name}/wait_status`
       })
@@ -45,8 +45,8 @@ function * run (context) {
   })
 
   let dbs = []
-  if (db) dbs = yield [fetcher.addon(app, db)]
-  else dbs = yield fetcher.all(app)
+  if (db) dbs = yield [fetcher.addon(heroku, app, db)]
+  else dbs = yield fetcher.all(heroku, app)
 
   for (let db of dbs) yield waitFor(db)
 }

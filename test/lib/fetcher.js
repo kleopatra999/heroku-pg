@@ -7,13 +7,11 @@ const proxyquire = require('proxyquire')
 const resolver = {}
 const fetcher = proxyquire('../../lib/fetcher', {'heroku-cli-addons': {resolve: resolver}})
 const Heroku = require('heroku-client')
-const cli = require('heroku-cli-util')
 
 describe('fetcher', () => {
   let api
 
   beforeEach(() => {
-    cli.heroku = new Heroku()
     api = nock('https://api.heroku.com:443')
   })
 
@@ -24,13 +22,13 @@ describe('fetcher', () => {
 
   describe('addon', () => {
     it('returns addon attached to app', () => {
-      resolver.attachment = (app, db) => {
+      resolver.attachment = (_, app, db) => {
         if (app === 'myapp' && db === 'DATABASE_URL') {
           return Promise.resolve({addon: {name: 'postgres-1'}})
         }
         return Promise.resolve()
       }
-      return fetcher.addon('myapp', 'DATABASE_URL')
+      return fetcher.addon(new Heroku(), 'myapp', 'DATABASE_URL')
       .then(addon => {
         expect(addon.name, 'to equal', 'postgres-1')
       })
@@ -47,7 +45,7 @@ describe('fetcher', () => {
       ]
       api.get('/apps/myapp/addon-attachments').reply(200, attachments)
 
-      return fetcher.all('myapp')
+      return fetcher.all(new Heroku(), 'myapp')
       .then(addons => {
         expect(addons[0], 'to satisfy', {name: 'postgres-1'})
         expect(addons[1], 'to satisfy', {name: 'postgres-2'})
