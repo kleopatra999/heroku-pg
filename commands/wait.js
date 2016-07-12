@@ -45,8 +45,11 @@ function * run (context, heroku) {
   })
 
   let dbs = []
-  if (db) dbs = yield [fetcher.addon(heroku, app, db)]
-  else dbs = yield fetcher.all(heroku, app)
+  if (db) {
+    dbs = yield [fetcher.addon(heroku, app, db)]
+  } else {
+    dbs = yield fetcher.all(heroku, app)
+  }
 
   for (let db of dbs) yield waitFor(db)
 }
