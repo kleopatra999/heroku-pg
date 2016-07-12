@@ -12,7 +12,7 @@ function * run (context, heroku) {
   let waitFor = co.wrap(function * waitFor (db) {
     const wait = require('co-wait')
     let interval = parseInt(context.flags['wait-interval'])
-    if (!interval || interval < 0) interval = 1
+    if (!interval || interval < 0) interval = 5
 
     let status
     let waiting = false

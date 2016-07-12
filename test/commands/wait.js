@@ -38,7 +38,7 @@ describe('pg:wait', () => {
       .get('/client/v11/databases/postgres-1/wait_status').reply(200, {'waiting?': true, message: 'pending'})
       .get('/client/v11/databases/postgres-1/wait_status').reply(200, {'waiting?': false, message: 'available'})
 
-    return cmd.run({app: 'myapp', args: {database: 'DATABASE_URL'}, flags: {}})
+    return cmd.run({app: 'myapp', args: {database: 'DATABASE_URL'}, flags: {'wait-interval': '1'}})
       .then(() => expect(cli.stdout, 'to equal', ''))
       .then(() => expect(cli.stderr, 'to equal', `Waiting for database postgres-1... pending
 Waiting for database postgres-1... available
