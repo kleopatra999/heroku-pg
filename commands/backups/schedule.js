@@ -54,7 +54,6 @@ module.exports = {
   description: 'schedule daily backups for given database',
   needsApp: true,
   needsAuth: true,
-  variableArgs: true,
   args: [
     {name: 'database', optional: true}
   ],
