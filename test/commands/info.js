@@ -53,8 +53,8 @@ describe('pg', () => {
     }
     let addonService = {name: 'heroku-postgresql'}
     let addons = [
-      {id: 1, name: 'postgres-1', addon_service: addonService, plan},
-      {id: 2, name: 'postgres-2', addon_service: addonService, plan}
+      {id: 1, name: 'postgres-1', addon_service: addonService, plan, app: {name: 'myapp2'}},
+      {id: 2, name: 'postgres-2', addon_service: addonService, plan, app: {name: 'myapp'}}
     ]
     let dbA = {info: [
       {name: 'Plan', values: ['Hobby-dev']},
@@ -82,6 +82,7 @@ describe('pg', () => {
       .then(() => expect(cli.stdout, 'to equal', `=== DATABASE_URL, HEROKU_POSTGRESQL_COBALT_URL
 Plan:      Hobby-dev
 Following: HEROKU_POSTGRESQL_COBALT
+App:       myapp2
 Add-on:    postgres-1
 
 === HEROKU_POSTGRESQL_PURPLE_URL
