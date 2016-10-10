@@ -8,6 +8,7 @@ exports.topics = [
 
 exports.commands = flatten([
   require('./commands/backups'),
+  require('./commands/copy'),
   require('./commands/info'),
   require('./commands/kill'),
   require('./commands/killall'),
