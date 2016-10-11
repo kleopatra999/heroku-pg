@@ -39,7 +39,11 @@ describe('fetcher', () => {
     it('returns db connection info', () => {
       resolver.attachment = (_, app, db) => {
         if (app === 'myapp' && db === 'DATABASE_URL') {
-          return Promise.resolve({addon: {id: 100, name: 'postgres-1'}})
+          return Promise.resolve({addon: {
+            id: 100,
+            name: 'postgres-1',
+            app: {name: 'myapp'}
+          }})
         }
         return Promise.resolve()
       }
