@@ -11,6 +11,7 @@ exports.commands = flatten([
   require('./commands/info'),
   require('./commands/kill'),
   require('./commands/killall'),
+  require('./commands/promote'),
   require('./commands/ps'),
   require('./commands/wait')
 ])
